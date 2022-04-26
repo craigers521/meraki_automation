@@ -1,0 +1,26 @@
+- name: Configure Wireless
+  hosts: craig_lab_wireless
+  connection: local
+  collections: 
+    - cisco.meraki
+  tasks:
+
+  - name: Configure ssids
+    meraki_mr_ssid:
+      auth_key: "{{ auth_key }}"
+      org_name: "{{ org_name }}"
+      net_name: "{{ net_name }}"
+      name: "{{ item.name }}"
+      enabled: "{{ item.enabled }}"
+      number: "{{ item.number }}"
+      state: present
+    loop: "{{ wireless_conf }}"
+    loop_control:
+      label: "{{ item.name }}"
+    register: result
+    tags: [always]
+
+  - name: display result
+    debug:
+      msg: "{{ result }}"
+    tags: [never, debug]

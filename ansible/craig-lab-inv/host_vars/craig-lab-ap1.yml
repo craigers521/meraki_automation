@@ -1,0 +1,7 @@
+wireless_conf:
+  - name: "craig-lab-meraki"
+    number: 0
+    enabled: true
+  - name: "splash-test"
+    number: 1
+    enabled: false

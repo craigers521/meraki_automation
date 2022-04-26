@@ -2,7 +2,7 @@ import meraki
 import os
 import json
 
-api_key = os.getenv("MERAKI_API")
+api_key = os.getenv("MERAKI_KEY")
 org_id = "398020"
 
 
