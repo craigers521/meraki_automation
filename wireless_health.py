@@ -66,15 +66,15 @@ def conn_counter(connstats):
         if connstats["auth"] > 0:
             # need to figure out how to weight score decrementer for situations with lots of failures and/or no successes
             score_dec = (connstats["auth"] / total_inter) * 100
-            conn_score["score"] = score_dec
+            conn_score["score"] += score_dec
             conn_score["reason"] += "Authentication Failures;"
         if connstats["dhcp"] > 0:
             score_dec = (connstats["dhcp"] / total_inter) * 100
-            conn_score["score"] = score_dec
+            conn_score["score"] += score_dec
             conn_score["reason"] += "DHCP Failures;"
         if connstats["dns"] > 0:
             score_dec = (connstats["dns"] / total_inter) * 100
-            conn_score["score"] = score_dec
+            conn_score["score"] += score_dec
             conn_score["reason"] += "DHCP Failures;"
     return conn_score
 
