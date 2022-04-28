@@ -1,3 +1,20 @@
+"""
+Copyright (c) 2022 Cisco and/or its affiliates.
+
+This software is licensed to you under the terms of the Cisco Sample
+Code License, Version 1.1 (the "License"). You may obtain a copy of the
+License at
+
+               https://developer.cisco.com/docs/licenses
+
+All use of the material herein must be in accordance with the terms of
+the License. All rights not expressly granted by the License are
+reserved. Unless required by applicable law or agreed to separately in
+writing, software distributed under the License is distributed on an "AS
+IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied
+"""
+
 import meraki
 import os
 import json
@@ -65,15 +82,15 @@ def conn_counter(connstats):
     if total_inter > 0:
         if connstats["auth"] > 0:
             # need to figure out how to weight score decrementer for situations with lots of failures and/or no successes
-            score_dec = (connstats["auth"] / total_inter) * 100
+            score_dec = round((connstats["auth"] / total_inter) * 100)
             conn_score["score"] += score_dec
             conn_score["reason"] += "Authentication Failures;"
         if connstats["dhcp"] > 0:
-            score_dec = (connstats["dhcp"] / total_inter) * 100
+            score_dec = round((connstats["dhcp"] / total_inter) * 100)
             conn_score["score"] += score_dec
             conn_score["reason"] += "DHCP Failures;"
         if connstats["dns"] > 0:
-            score_dec = (connstats["dns"] / total_inter) * 100
+            score_dec = round((connstats["dns"] / total_inter) * 100)
             conn_score["score"] += score_dec
             conn_score["reason"] += "DHCP Failures;"
     return conn_score
