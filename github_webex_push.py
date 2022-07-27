@@ -8,11 +8,14 @@ from webexteamssdk.utils import make_attachment
 from webexteamssdk.models.cards.options import ImageSize
 
 room_id = "Y2lzY29zcGFyazovL3VzL1JPT00vNGM5MjY5NzAtZGM1NC0xMWVjLTg2NWItYmJhYTc3ZmE1ZTU0"
+server = os.getenv("GITHUB_SERVER_URL")
+repo = os.getenv("GITHUB_REPOSITORY")
+project_url = f"{server}/{repo}"
 
 pipe_img = Image(url='https://img.icons8.com/ios/344/merge-git.png',
     size=ImageSize("small"), separator=True)
 greeting = TextBlock("Meraki - New Branch Commit")
-submit = OpenUrl(os.getenv("CI_PROJECT_URL"), title="Open Project")
+submit = OpenUrl(project_url, title="Open Project")
 
 card = AdaptiveCard(body=[pipe_img, greeting], actions=[submit])
 
