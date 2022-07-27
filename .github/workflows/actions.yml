@@ -1,0 +1,10 @@
+name: GitHub Actions chatops
+on: [push]
+jobs:
+  ChatOps:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pip install webexteamssdk
+      - name: checkout
+        uses: actions/checkout@v3
+      - run: python github_webex_push.py
