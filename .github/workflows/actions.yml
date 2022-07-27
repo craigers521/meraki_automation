@@ -8,3 +8,5 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - run: python github_webex_push.py
+        env:
+          WEBEX_TEAMS_ACCESS_TOKEN: ${{ secrets.WEBEX_TOKEN }}
