@@ -3,15 +3,16 @@ import os
 import json
 import sys
 import getopt
+import csv
 
 api_key = os.getenv("MERAKI_KEY")
 org_id = "1160673"
 
 
 def parse_args(args):
-    mac = None
+    mac = filename = None
     try:
-        opts, args = getopt.getopt(args, "hm:", ["mac="])
+        opts, args = getopt.getopt(args, "hm:f:", ["mac=", "filename="])
     except getopt.GetoptError:
         print("you're doing it wrong")
         sys.exit(2)
@@ -22,7 +23,9 @@ def parse_args(args):
             sys.exit()
         elif opt in ("-m", "--mac"):
             mac = arg
-    return mac
+        elif opt in ("-f", "--filename"):
+            filename = arg
+    return mac, filename
 
 
 def get_networks():
@@ -46,9 +49,17 @@ def find_clients(networks, filter_mac):
     return found_clients
 
 
+def output_csv(clients, filename):
+    filename = 'output.csv' if filename is None else filename
+    with open(filename, 'w') as f:
+        writer = csv.DictWriter(f, fieldnames=clients[0].keys())
+        writer.writeheader()
+        writer.writerows(clients)
+
 if __name__ == "__main__":
-    mac = parse_args(sys.argv[1:])
+    mac, filename = parse_args(sys.argv[1:])
     dash = meraki.DashboardAPI(api_key, suppress_logging=True)
     network_ids = get_networks()
     found_clients = find_clients(network_ids, mac)
     print(found_clients)
+    output_csv(found_clients, filename)
