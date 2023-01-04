@@ -51,10 +51,13 @@ def find_clients(networks, filter_mac):
 
 def output_csv(clients, filename):
     filename = 'output.csv' if filename is None else filename
-    with open(filename, 'w') as f:
-        writer = csv.DictWriter(f, fieldnames=clients[0].keys())
-        writer.writeheader()
-        writer.writerows(clients)
+    if len(clients) > 0:
+        with open(filename, 'w') as f:
+            writer = csv.DictWriter(f, fieldnames=clients[0].keys())
+            writer.writeheader()
+            writer.writerows(clients)
+    else:
+        print("No Clients Found with that MAC address")
 
 if __name__ == "__main__":
     mac, filename = parse_args(sys.argv[1:])
