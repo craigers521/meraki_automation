@@ -1,0 +1,115 @@
+{
+	"roomId": "Y2lzY29zcGFyazovL3VzL1JPT00vNGM5MjY5NzAtZGM1NC0xMWVjLTg2NWItYmJhYTc3ZmE1ZTU0",
+	"markdown": "***TEST FROM MERAKI***",
+	"attachments": [{
+		"contentType": "application/vnd.microsoft.card.adaptive",
+		"content": {
+			"type": "AdaptiveCard",
+			"version": "1.2",
+			"body": [{
+					"type": "ColumnSet",
+					"columns": [{
+							"type": "Column",
+							"items": [{
+								"type": "Image",
+								"style": "Person",
+								"url": "https://pbs.twimg.com/profile_images/1405172031369322498/vsfNJ3dC_400x400.png",
+								"size": "Medium",
+								"height": "50px"
+							}],
+							"width": "auto"
+						},
+						{
+							"type": "Column",
+							"items": [{
+									"type": "TextBlock",
+									"text": "Meraki Alert",
+									"weight": "Bolder",
+									"color": "Warning"
+								},
+								{
+									"type": "TextBlock",
+									"weight": "Bolder",
+									"text": "{{alertType}}",
+									"horizontalAlignment": "Left",
+									"wrap": true,
+									"color": "Light",
+									"size": "Large",
+									"spacing": "Small"
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				},
+				{
+					"type": "ColumnSet",
+					"columns": [{
+							"type": "Column",
+							"width": 35,
+							"items": [{
+									"type": "TextBlock",
+									"text": "Affected Device:",
+									"color": "Light"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Occured at:",
+									"weight": "Lighter",
+									"color": "Light",
+									"spacing": "Small"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"width": 65,
+							"items": [{
+									"type": "TextBlock",
+									"text": "{{deviceName}}",
+									"color": "Light"
+								},
+								{
+									"type": "TextBlock",
+									"text": "{{occurredAt}}",
+									"color": "Light",
+									"weight": "Lighter",
+									"spacing": "Small"
+								}
+							]
+						}
+					],
+					"spacing": "Padding",
+					"horizontalAlignment": "Center"
+				},
+				{
+				{% capture markdown %}
+
+				{% assign properties = alertData | keys -%}
+				{%- for p in properties %}
+
+				{{p}} --  {{alertData[p]| jsonify}}
+
+				{%- endfor %}
+				{% endcapture %}
+					"type": "FactSet",
+					"facts": [{
+						"title": "Alert Data",
+						"value": {{markdown | jsonify}}
+					}]
+				},
+				{
+					"type": "ActionSet",
+					"actions": [{
+						"type": "Action.OpenUrl",
+						"title": "Open Dashboard",
+						"url": "https://dashboard.meraki.com"
+					}],
+					"horizontalAlignment": "Left",
+					"spacing": "None"
+				}
+			]
+		}
+	}]
+
+}
