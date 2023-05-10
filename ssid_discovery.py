@@ -1,5 +1,6 @@
 import meraki
 import os
+import csv
 
 
 api_key = os.getenv("MERAKI_KEY")
@@ -23,8 +24,14 @@ def findSsidEnabled(networks):
     return enabled_nets
 
 def output_names(networks):
-    for network in networks:
-        print(network['name'])
+    filename = 'networks.csv'
+    if len(networks) > 0:
+        with open(filename, 'w') as f:
+            writer = csv.DictWriter(f, fieldnames=networks[0].keys())
+            writer.writeheader()
+            writer.writerows(networks)
+    else:
+        print("No Clients Found with that MAC address")
     pass
 
 if __name__ == "__main__":
