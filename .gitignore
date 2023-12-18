@@ -3,3 +3,4 @@
 .vscode
 *.csv
 *test*
+*batch_helper_preview*
