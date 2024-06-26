@@ -5,7 +5,6 @@ import csv
 
 api_key = os.getenv("MERAKI_KEY")
 org_id = os.getenv("ORG_ID")
-target_ssid = ""
 
 def getNetworks():
     networks = dash.organizations.getOrganizationNetworks(org_id, total_pages=all)
@@ -18,22 +17,20 @@ def findSsidEnabled(networks):
     enabled_nets = []
     for network in networks:
         ssids = dash.wireless.getNetworkWirelessSsids(network['id'])
+        enabled_ssids = {"net_name":network['name']}
         for ssid in ssids:
-            if ssid['name'] == target_ssid and ssid['enabled']:
-                enabled_nets.append(network)
-            elif target_ssid == '' and ssid['enabled']:
-                enabled_nets.append(network)
+            k = "ssid"+str(ssid['number'])
+            enabled_ssids[k] = ssid['name']
+        enabled_nets.append(enabled_ssids)
     return enabled_nets
 
 def output_names(networks):
-    filename = 'networks.csv'
+    filename = 'ssids.csv'
     if len(networks) > 0:
         with open(filename, 'w') as f:
             writer = csv.DictWriter(f, fieldnames=networks[0].keys())
             writer.writeheader()
             writer.writerows(networks)
-    else:
-        print("No Clients Found with that MAC address")
     pass
 
 if __name__ == "__main__":
